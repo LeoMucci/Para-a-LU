@@ -671,16 +671,13 @@ width: 100%;
     </div>
 <audio id="audioPlayer" autoplay loop>
   <source src="/assets/musicaa.mp3" type="audio/mp3">
-  Seu navegador não suporta o formato de áudio.
 </audio>
 
 <script>
-  // Espera o carregamento completo da página para garantir que o áudio esteja pronto
-  window.addEventListener('load', function() {
-    var audio = document.getElementById('audioPlayer');
-    audio.volume = 0.3; // Ajusta o volume para 50% do máximo
-  });
+  var audio = document.getElementById('audioPlayer');
+  audio.volume = 0.3; // Ajusta o volume para 30% do máximo
 </script>
+
 
 <script>
   // Navegação entre páginas
