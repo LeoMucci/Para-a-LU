@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa do Nosso Amor</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            height: 100vh;
+            color: #333;
+        }
+
+        .header {
+            margin-top: 20px;
+            text-align: center;
+            padding: 20px;
+            
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            background: linear-gradient(135deg, #d63384, #f093fb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            margin-top: 50px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.2em;
+            font-style: italic;
+        }
+
+        .map-container {
+            height: calc(100vh - 250px);
+            margin: 20px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+            border: 3px solid rgba(255, 255, 255, 0.8);
+        }
+
+        #map {
+            height: 100%;
+            width: 100%;
+        }
+
+        .popup-content {
+            text-align: center;
+            min-width: 280px;
+            padding: 10px;
+        }
+
+        .popup-content h3 {
+            color: #d63384;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .popup-content img {
+            width: 100%;
+            max-width: 250px;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin: 15px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .popup-content p {
+            margin: 10px 0;
+            line-height: 1.6;
+            font-size: 0.95em;
+        }
+
+        .date-info {
+            font-style: italic;
+            color: #d63384;
+            font-size: 1em;
+            font-weight: bold;
+            background: rgba(214, 51, 132, 0.1);
+            padding: 5px 10px;
+            border-radius: 15px;
+            display: inline-block;
+        }
+
+        .memory-quote {
+            font-style: italic;
+            color: #666;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 10px;
+            margin: 10px 0;
+            border-left: 4px solid #d63384;
+        }
+
+        .leaflet-popup-content-wrapper {
+            background: linear-gradient(135deg, #fff 0%, #ffeaa7 100%);
+            border-radius: 15px;
+        }
+
+        .leaflet-popup-tip {
+            background: #ffeaa7;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+         /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            padding: 0 20px;
+        }
+
+        .nav-item {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 10px 20px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+     <!-- Navbar -->
+
+    <div class="tab-content" id="timeline-tab">
+     <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-item " data-tab="camera">📸 Câmera</a>
+            <a href="mapa.html" class="nav-item active" data-tab="timeline">💕 Mapa do Amor</a>
+            <a href="cartinha.html" class="nav-item" data-tab="letter">💌 Carta de Amor</a>
+        </div>
+    </nav>
+        <div class="header">
+        <h1>💕 Mapa do Nosso Amor 💕</h1>
+        <p>Cada lugar conta uma parte da nossa história</p>
+    </div>
+
+
+            <div class="map-container">
+        <div id="map"></div>
+        <audio id="audioPlayer" autoplay loop>
+  <source src="/assets/nosDois.mp3" type="audio/mp3">
+  Seu navegador não suporta o formato de áudio.
+</audio>
+
+<script>
+  // Espera o carregamento completo da página para garantir que o áudio esteja pronto
+  window.addEventListener('load', function() {
+    var audio = document.getElementById('audioPlayer');
+    audio.volume = 0.3; // Ajusta o volume para 50% do máximo
+  });
+</script>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+    <script>
+        // Inicializar o mapa
+        const map = L.map('map').setView([-14.2350, -51.9253], 4);
+
+        // Adicionar camada do mapa
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Nossa história de amor em lugares
+        const places = [
+            {
+                name: "Estação Ana Rosa - A primeira vez que nos vimos",
+                type: "special",
+                date: "2024-10-29",
+                story: "Momo encontrar você pela primeira vez foi como um instante fora do tempo. Eu lembro como tudo ao meu redor parecia ficar mais devagar, como se o mundo inteiro tivesse se moldado apenas para aquele momento. Você se destacando na multidão(COMO É LINDA MEU DEUS), meu coracão super acelerado(quase desmaiandokkkkk)",
+                photo: "https://i.ytimg.com/vi/ipC_yCTnhss/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLD0a_IWVbYbrLiYFPQ-GxcQSMMJdQ",
+                lat: -23.581389,
+                lng: -46.638647,
+    
+            },
+            {
+                name: "Nosso primeiro beijinhoo e primeiro encontro",
+                type: "special",
+                date: "2024-10-29",
+                story: "Nosso primeiro beijinho eu nunca vou esquecer, na tok&stock do shoping santa cruz, que tambem foi nosso primeiro encontro no cinema para assistir Soria 2, e foi quando dei oii para meus amigões hehe ",
+                photo: "https://casadefirulas.com.br/wp-content/uploads/2017/04/tokstok10-660x373.jpg",
+                lat: -23.597984,
+                lng: -46.636741,
+                quote: "Eu me derreti e continuo me derretendo com seus beijinhos"
+            },
+            {
+                name: "Museu do Ipiranga",
+                type: "visited",
+                date: "2024-11-03",
+                story: "Nosso segundo encontro, comemos um hamburguinho muiiiito gostoso e você ficou com o meu puique era mais gostoso, depois fomos para o museu e foi muiiiito legal, aaah e foi quando eu te dei frozinha pela primeira vez",
+                photo: "https://ogimg.infoglobo.com.br/in/24625648-ce3-8ab/FT1086A/40066545985_302bd35ac8_k.jpg",
+                lat: -23.585608,
+                lng: -46.609678,
+                
+            },
+            {
+                name: "Primeiro Eu Te Amo",
+                type: "special",
+                date: "2024-11-16",
+                story: "Eu fico todo bobinho so de lembrar desse dia, eu te peguei de uma prova, fomos comer, e depois quando te deixei em casa, voce disse que me amava ",
+                lat: -23.6098,
+                lng: -46.6263,
+                quote: "Um dos dias mais felizes da minha vida"
+            },
+            {
+                name: "Super piquenique",
+                type: "visited",
+                date: "2024-11-21",
+                story: "Foi nosso super hiper mega piquenique muiiiiito gostoso, esse dia foi maravilhoso mo, e depois fomos no rodizio hehe",
+                lat: -23.584604,
+                lng: -46.609749,
+            },
+            {
+                name: "Museu da imigração",
+                type: "visited",
+                date: "2024-11-25",
+                story: "Foi tão gostoso esse dia meu amooor, tiramos fotinhos juntinhos, procuramos nossos nomes no paradão de nome, e tava acontecendo aquele festival italiano, e eu te dei suvete na boquinha ",
+                photo: "https://universoludico.com.br/wp-content/uploads/2020/07/Museu-da-Imigracao-1.jpg",
+                lat: -23.5492,
+                lng: -46.6131 ,
+            },
+            {
+                name: "O dia que você disse que queria namorar comigo",
+                type: "special",
+                date: "2024-12-07",
+                story: "Aiaiaia esse dia mo, tambem foi um dos dias mais felizes da minha vida, o dia do meu tcc, eu tava tão nervoso, mas é incrivel como so com sua presença você consegue me acalmar, e foi dentro do carro antes do meu TCC que você confirmou que quria namorar comigo, eu fiquei todo bobo",
+                photo: "https://atreus-prd.qconcursos.com/articles/images/45cae9f6-1a91-41ae-9d03-189e742b2b10/Fatec%20de%20S%C3%A3o%20Caetano%20do%20Sul%20-%20SP.jpg",
+                lat: -23.62306,
+                lng: -46.55111,
+                quote: "EU TE AMO MUIIIIITOOO"
+            },
+            {
+                name: "CineSala",
+                type: "visited",
+                date: "2024-12-16",
+                story: "Cineminha juntinhos e agarradinhos no sofazao do cine sala e depois fomos comer um Mexicano muiiito gostoso",
+                photo: "https://applications-media.feverup.com/image/upload/f_auto/fever2/plan/photo/40f7d952-361b-11ee-b8a9-6ee161c930b9.jpg",
+                lat: -23.5665,
+                lng: -46.6915,
+            },
+            
+            // Lugares dos nossos sonhos
+            {
+                name: "Ano novo na vovo",
+                type: "special",
+                date: "2025-01-01",
+                story: "passamor o ano novo juntinhos na casa da vovo, foi tao gotosooo, te beijar nos fogos foi incrivel mooo",
+                lat: -23.6319159,
+                lng: -46.4902149,
+                quote: "O melhor ano novo da minha vida"
+            },
+            {
+                name: "Guarujaa",
+                type: "visited",
+                date: "2025-01-03",
+                story: "Fomos para o guaruja juntinhos e pegamos bastante transito, mas foi muito diveritido ficar la com você amor, tirando a parte do virus bobão",
+                lat: -23.9931,
+                lng: -46.2564,
+
+            },
+            {
+                name: "Aliança e cinema",
+                type: "special",
+                date: "2025-01-12",
+                story: "Era para eu te dar a aliança dia 06 no Guaruja, mas não deu certo, então nesse dia eu te entreguei a aliança e fomos assitir meu filme favorito, brigadu momo",
+                lat: -23.6142428391239,
+                lng: -46.62343885890175,
+
+            },
+            {
+                name: "StandUp",
+                type: "visited",
+                date: "2025-01-31",
+                story: "Fomos no StandUp do Rafael e foi muito divertidoooo, demos muita risadas. Eu amo a sua risada amor",
+                lat: -23.5275,
+                lng: -46.6880,
+            },
+
+            {
+                name: "Marmitinhas",
+                type: "special",
+                date: "2025-02-02",
+                story: "A gente fez marmitinhas para mim juntinhoooos e foi muito gostoso e divertido",
+                lat: -23.667645061563434,
+                lng: -46.47447254588378,
+            },
+
+            {
+                name: "Paulista ",
+                type: "visited",
+                date: "2025-02-10",
+                story: "Fomos na Paulita junto com a Julia e com o Léo e foi muito legal, você inventando varias mentiras askdkasdkas",
+                lat: -23.5568,
+                lng: -46.6538,
+            },
+            {
+                name: "Busão para Guaruja",
+                type: "visited",
+                date: "2025-02-16",
+                story: "Primeira vez que viajei de busão e foi com o amor da minha vida juntinho comigooooo",
+                lat: -23.64556,
+                lng: -46.64167,
+            },
+            {
+                name: "Minha Formatura",
+                type: "visited",
+                date: "2025-02-19",
+                story: "Foi um dia muito especial e mais ainda puique vc foi amor",
+                lat: -23.5568,
+                lng: -46.6538,
+            },
+                        {
+                name: "Liberdade",
+                type: "visited",
+                date: "2025-03-06",
+                story: "Fomos comer lamen na liberdade e compramos varios docinhos diferentes, um dia muiiiiito gostoso",
+                lat: -23.5678,
+                lng: -46.6294,
+            },
+                                    {
+                name: "Super trilha",
+                type: "visited",
+                date: "2025-03-17",
+                story: "Esse dia foi tenso mas foi muiiito bom, fizermos um super passeio e depois uma super trilha, temos que fazer mais trilhas meu amor",
+                lat: -23.8152,
+                lng: -46.6246,
+            },
+                                                {
+                name: "Primeira Palestra juntos",
+                type: "visited",
+                date: "2025-04-02",
+                story: "Foiiii muito legal esse dia mo, fomos juntos na palestra e depois fomos comemorar nosso mesversario de namoro no coco bambu",
+                lat: -23.5583,
+                lng: -46.6590,
+            },
+
+                                                            {
+                name: "Viagem e aniversario do tui",
+                type: "special",
+                date: "2025-04-18",
+                story: "Essa chacara foi muiiito divertida mo, dormir agarradinho no sofa, ver pesadelo na cozinha juntos na rede, a piscina tudoooo, fazer brigadeiro juntos, foi muoito gostoso mo",
+                lat: -22.5914,
+                lng: -46.5289,
+            },
+
+                                                                        {
+                name: "Aniversario do amor da minha vidaaaa",
+                type: "special",
+                date: "2025-04-26",
+                story: "Foi seu aniversaio momoooooo, um dos dias mais especiais do anooo, fomos no outback cumeee",
+                lat: -23.619603508384976,
+                lng: -46.626752288214966,
+            },
+
+                                                                                    {
+                name: "Meu aniversario",
+                type: "special",
+                date: "2025-05-20",
+                story: "Meu aniversario e foi o melhor anivesario de todos, puique estava nele momo, e fomos no paris 6 cumeee com meus pais",
+                lat: -23.69114993486796,
+                lng: -46.55089119005822,
+            },
+            
+            
+            
+            {
+                name: "Casar na Aurora Boreal - Islândia",
+                type: "planned",
+                story: "Achou que eu ia esquecer mo???? ainda vamos casar com a aurora boreal no ceu",
+                photo: "https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=400",
+                lat: 64.9631,
+                lng: -19.0208,
+            }
+        ];
+
+        // Função para criar ícones personalizados
+        function createCustomIcon(type) {
+            let emoji, color;
+            
+            switch(type) {
+                case 'special':
+                    emoji = '💖';
+                    color = '#d63384';
+                    break;
+                case 'visited':
+                    emoji = '🌟';
+                    color = '#28a745';
+                    break;
+                case 'planned':
+                    emoji = '✨';
+                    color = '#ffc107';
+                    break;
+            }
+            
+            return L.divIcon({
+                html: `<div style="
+                    background: white;
+                    width: 35px;
+                    height: 35px;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 18px;
+                    border: 3px solid ${color};
+                    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+                    animation: bounce 2s infinite;
+                ">${emoji}</div>`,
+                className: 'custom-div-icon',
+                iconSize: [35, 35],
+                iconAnchor: [17, 17]
+            });
+        }
+
+        // Função para formatar data
+        function formatDate(dateString) {
+            if (!dateString) return '';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('pt-BR', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            });
+        }
+
+        // Adicionar marcadores no mapa
+        places.forEach((place) => {
+            const marker = L.marker([place.lat, place.lng], {
+                icon: createCustomIcon(place.type)
+            }).addTo(map);
+
+            const typeText = {
+                'special': '💖 Momento Especial',
+                'visited': '🌟 Já Vivemos',
+                'planned': '✨ Vamos Viver'
+            };
+
+            const popupContent = `
+                <div class="popup-content">
+                    <h3>${place.name}</h3>
+                    ${place.photo ? `<img src="${place.photo}" alt="${place.name}" onerror="this.style.display='none'">` : ''}
+                    <p><strong>${typeText[place.type]}</strong></p>
+                    ${place.date ? `<p class="date-info">📅 ${formatDate(place.date)}</p>` : ''}
+                    <p>${place.story}</p>
+                    ${place.quote ? `<div class="memory-quote">"${place.quote}"</div>` : ''}
+                </div>
+            `;
+
+            marker.bindPopup(popupContent, {
+                maxWidth: 320,
+                className: 'custom-popup'
+            });
+        });
+
+        // Adicionar linha conectando lugares visitados
+        const visitedPlaces = places
+            .filter(p => p.type === 'visited' || p.type === 'special')
+            .sort((a, b) => new Date(a.date) - new Date(b.date));
+        
+        const coordinates = visitedPlaces.map(place => [place.lat, place.lng]);
+        
+        if (coordinates.length > 1) {
+            L.polyline(coordinates, {
+                color: '#d63384',
+                weight: 3,
+                opacity: 0.6,
+                dashArray: '10, 5'
+            }).addTo(map);
+        }
+    </script>
+
+    </div>
+
+
+</body>
+</html>

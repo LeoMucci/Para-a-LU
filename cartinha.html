@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Meu Amor ❤️</title>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Poppins:wght@300;400;600&display=swap");
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Poppins", sans-serif;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .fade-out {
+    opacity: 1;
+    transition: opacity 1s ease-out;
+}
+
+ /* Partículas flutuantes - Mais variedade */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            animation: float 8s infinite linear;
+        }
+
+        .particle.dot {
+            width: 6px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        
+        
+
+        .particle.star {
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-bottom: 7px solid rgba(255, 255, 255, 0.9);
+            position: relative;
+        }
+
+        .particle.star::before {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 7px solid rgba(255, 255, 255, 0.9);
+            top: 3px;
+            left: -5px;
+        }
+
+        .particle.circle {
+            width: 8px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.6);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            padding: 0 20px;
+        }
+
+        .nav-item {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 10px 20px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Conteúdo das abas */
+        .tab-content {
+            display: none;
+            min-height: 100vh;
+            padding-top: 80px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 10;
+            margin-top: 50px;
+        }
+
+        .title {
+            font-family: "Dancing Script", cursive;
+            font-size: 4rem;
+            color: #fff;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+            margin-bottom: 10px;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 3px 3px 6px rgba(0,0,0,0.3), 0 0 20px rgba(255,255,255,0.5); }
+            to { text-shadow: 3px 3px 6px rgba(0,0,0,0.3), 0 0 30px rgba(255,255,255,0.8); }
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: rgba(255,255,255,0.9);
+            font-weight: 300;
+        }
+
+        /* Câmera Polaroid */
+        .camera-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 60vh;
+            position: relative;
+            z-index: 50;
+            perspective: 1000px;
+        }
+
+        .polaroid-camera {
+            width: 350px;
+            height: 220px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+
+        .polaroid-camera:hover {
+            transform: translateY(-15px) rotateX(5deg);
+        }
+
+        .camera-body {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(145deg, #f5f5f5 0%, #e0e0e0 50%, #d0d0d0 100%);
+            border-radius: 25px;
+            position: relative;
+            box-shadow: 
+                0 25px 50px rgba(0,0,0,0.4),
+                inset 0 2px 4px rgba(255,255,255,0.3),
+                inset 0 -2px 4px rgba(0,0,0,0.1);
+            border: 2px solid #ccc;
+        }
+
+        .camera-top-section {
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 250px;
+            height: 25px;
+            background: linear-gradient(145deg, #e8e8e8, #c8c8c8);
+            border-radius: 15px 15px 5px 5px;
+            box-shadow: 0 -3px 6px rgba(0,0,0,0.2);
+        }
+
+        .camera-lens {
+            width: 90px;
+            height: 90px;
+            background: 
+                radial-gradient(circle at 30% 30%, #666 0%, #333 40%, #111 70%, #000 100%);
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 10px solid #444;
+            box-shadow: 
+                inset 0 0 30px rgba(0,0,0,0.8),
+                0 8px 16px rgba(0,0,0,0.3);
+        }
+
+        .camera-lens::before {
+            content: '';
+            position: absolute;
+            top: 15%;
+            left: 20%;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, rgba(255,255,255,0.6) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .camera-flash {
+            width: 30px;
+            height: 30px;
+            background: radial-gradient(circle, #fff 0%, #f0f0f0 50%, #ddd 100%);
+            border-radius: 50%;
+            position: absolute;
+            top: 35px;
+            right: 50px;
+            box-shadow: 
+                0 3px 6px rgba(0,0,0,0.2),
+                inset 0 1px 2px rgba(255,255,255,0.8);
+            border: 2px solid #ccc;
+        }
+
+        .camera-viewfinder {
+            width: 35px;
+            height: 25px;
+            background: linear-gradient(145deg, #222, #000);
+            border-radius: 4px;
+            position: absolute;
+            top: 30px;
+            left: 80px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.8);
+        }
+
+        .camera-button {
+            width: 45px;
+            height: 18px;
+            background: linear-gradient(145deg, #ff4757, #ff3742);
+            border-radius: 10px;
+            position: absolute;
+            top: 25px;
+            left: 35px;
+            box-shadow: 
+                0 4px 8px rgba(255,71,87,0.3),
+                inset 0 1px 2px rgba(255,255,255,0.3);
+            border: 1px solid #e63946;
+        }
+
+        .camera-brand {
+            position: absolute;
+            bottom: 15px;
+            left: 30px;
+            font-family: "Poppins", sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #666;
+            letter-spacing: 1px;
+        }
+
+        .click-instruction {
+            text-align: center;
+            margin-top: 30px;
+            color: #fff;
+            font-size: 1.1rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        /* Sistema de Fotos - APENAS na aba da câmera */
+        .photos-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+            display: none;
+        }
+
+        .photos-container.active {
+            display: block;
+        }
+
+        .polaroid-photo {
+            position: fixed;
+            width: 200px;
+            height: 250px;
+            background: #fff;
+            border-radius: 6px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            padding: 15px 15px 55px 15px;
+            transform: scale(0) rotate(0deg);
+            opacity: 0;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            transform-style: preserve-3d;
+            z-index: 5;
+            pointer-events: all;
+        }
+
+        .polaroid-photo.focused {
+            z-index: 100;
+            transform: scale(1.3) rotate(0deg) !important;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.6);
+            pointer-events: all;
+        }
+
+        .photo-image {
+width: 100%;
+    height: 193px;
+    background: #f8f8f8;
+    border-radius: 4px;
+    display: flex
+;
+    align-items: center;
+    justify-content: center;
+    color: #ccc;
+    margin-bottom: 10px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid #eee;
+    background-image: url(COLOQUE_AQUI_O_CAMINHO_DA_SUA_FOTO.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+        }
+
+        .photo-placeholder {
+            font-size: 3rem;
+            color: #ddd;
+            text-align: center;
+            line-height: 1;
+        }
+
+        /* Flash effect */
+        .flash-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.8) 100%);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 200;
+        }
+
+        .flash-overlay.active {
+            animation: cameraFlash 0.4s ease-out;
+        }
+
+        @keyframes cameraFlash {
+            0% { opacity: 0; }
+            30% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        /* Seções das outras abas */
+        .section {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            margin: 60px 20px;
+            padding: 40px;
+            border-radius: 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .section-title {
+            font-family: "Dancing Script", cursive;
+            font-size: 2.5rem;
+            color: #fff;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .section-item {
+            background: rgba(255,255,255,0.9);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .item-title {
+            font-weight: 600;
+            color: #ff6b6b;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .item-description {
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .gift-emoji {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        /* Carta de amor */
+        .love-letter {
+            background: rgba(255,255,255,0.95);
+            margin: 40px 400px;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            position: relative;
+            z-index: 10;
+        }
+
+        .letter-content {
+            color: #444;
+            line-height: 1.8;
+            font-size: 1.1rem;
+            text-align: justify;
+        }
+
+        .signature {
+            text-align: right;
+            margin-top: 30px;
+            font-family: "Dancing Script", cursive;
+            font-size: 1.5rem;
+            color: #ff6b6b;
+        }
+
+        /* Responsivo */
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2.5rem;
+            }
+            
+            .polaroid-camera {
+                width: 280px;
+                height: 180px;
+            }
+            
+            .camera-lens {
+                width: 70px;
+                height: 70px;
+            }
+            
+            .nav-container {
+                gap: 15px;
+            }
+            
+            .nav-item {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+        }
+
+
+
+/* Classe do container do mapa */
+.map-container-mapa {
+    position: relative;
+    width: 100%;
+    height: 500px; /* Tamanho do mapa */
+}
+
+/* Estilos dos ícones personalizados */
+.custom-div-icon-mapa {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    animation: bounce 2s infinite;
+}
+
+/* Estilos para as popups */
+.custom-popup-mapa {
+    max-width: 320px;
+}
+
+/* Estilos da caixa de conteúdo da popup */
+.popup-content-mapa {
+    font-family: Arial, sans-serif;
+    line-height: 1.5;
+}
+
+/* Estilo da data dentro da popup */
+.date-info-mapa {
+    color: #777;
+    font-size: 14px;
+}
+
+/* Estilos do texto da citação dentro da popup */
+.memory-quote-mapa {
+    font-style: italic;
+    color: #d63384;
+    margin-top: 10px;
+}
+
+/* Adiciona uma animação de "bounce" nos ícones */
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+
+
+
+        
+
+        
+    </style>
+</head>
+<body>
+    <!-- Partículas -->
+<!-- Partículas de coração -->
+<div class="particles" id="particles"></div>
+
+<!-- Partículas de pontos brancos -->
+<div class="particles white" id="particles-white"></div>
+
+    
+<nav class="navbar">
+    <div class="nav-container">
+        <a href="index.html" class="nav-item">📸 Câmera</a>
+        <a href="mapa.html" class="nav-item">💕 Mapa do Amor</a>
+        <a href="cartinha.html" class="nav-item active">💌 Carta de Amor</a>
+    </div>
+</nav>
+
+
+    <!-- Aba da Carta -->
+
+        <div class="header">
+            <h1 class="title">Cartinha para o amor da minha vidaaaaa 💌</h1>
+        </div>
+
+        <div class="love-letter">
+            <div class="letter-content">
+<p>Meu Amorzinho,</p>
+<p>MOOOOOOOOOOOOO Hoje é um dia muito especial</p>
+<p>É o nosso primeiro Dia dos Namorados juntos! Aeeeeeeeeeeeeeeeee</p><br>
+<p>Desde o primeiro momento em que te vi, eu soube que você era especial. Mas nunca imaginei que alguém pudesse me fazer sentir tão completo, tão vivo, tão eu mesmo. Você não apenas entrou na minha vida, você se tornou minha vida.</p>
+<br><p>Amo acordar pensando em você, amo como meu dia fica mais brilhante, bonito e cheio de dcor só de receber uma mensagem sua. Amo seus gestos delicados, sua risada gotosa, e a forma como você me olha como se eu fosse a pessoa mais importante do mundo. você é meu universo inteiro.</p>
+<br><p>Eu te amo com cada pedacinho meu. Te amo quando você está feliz e ilumina meu mundo, te amo quando está triste e tudo que quero é te abraçar até a dor passar. Te amo acordada e te amo dormindo, te amo pertinho e te amo mesmo quando não está aqui, porque você nunca sai do meu coração.</p>
+<br><p>Quando você sorri, meu mundo para e tudo ao redor perde o sentido, porque só você importa. Quando você me olha, eu me sinto o homem mais sortudo do universo, como se todas as estrelas se alinhassem só para nos encontrarmos. Quando você diz que me ama, meu coração explode de felicidade e eu tenho certeza absoluta de que encontrei o amor da minha vida</p>
+<br><p>Com você, eu descobri quem eu sou, do seu ladinho eu posso ser completamente eu mesmo. Você me aceita com todos os meus defeitos e me faz sentir perfeito do jeito que sou. Eu nunca imaginei que conseguiria amar alguém tanto assim, que meu coração tivesse essa capacidade infinita de amor que só você desperta em mim.</p>
+<br><p>Brigadu momo por escolher dividir sua vida comigo, por me aceitar como eu sou e por me fazer querer ser uma pessoa melhor a cada dia. Você é minha pessoa favorita, minha melhor amiga, minha alma gêmea. O Amor da Minha Vida.</p>
+<br><b><p>Feliz nosso primeiro Dia dos Namorados, meu amor!</p></b>
+<p>Que seja o primeiro de infinitos dias especiais ao seu lado. Obrigado por me amar, por me escolher e por me achar na minha caverna hehe</p>
+            </div>
+            <p class="signature">EU TE AMO MUIIIIITO MEU AMOOOOOOOR,<br> Léo - 12/06/2025</p>
+        </div>
+    </div>
+<audio id="audioPlayer" autoplay loop>
+  <source src="/assets/Rubel.mp3" type="audio/mp3">
+  Seu navegador não suporta o formato de áudio.
+</audio>
+
+<script>
+  // Espera o carregamento completo da página para garantir que o áudio esteja pronto
+  window.addEventListener('load', function() {
+    var audio = document.getElementById('audioPlayer');
+    audio.volume = 0.3; // Ajusta o volume para 50% do máximo
+  });
+</script>
+
+<script>
+  // Navegação entre páginas
+const navItems = document.querySelectorAll('.nav-item');
+
+navItems.forEach(item => {
+    item.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetPage = item.getAttribute('href'); // Agora usa o href para pegar a URL do destino
+        
+        // Redireciona para a página associada ao link
+        window.location.href = targetPage;
+    });
+});
+
+
+    // Sistema da câmera
+    const camera = document.getElementById("camera");
+    const flashOverlay = document.getElementById("flashOverlay");
+
+    // Array com URLs das suas fotos - SUBSTITUA PELOS CAMINHOS DAS SUAS FOTOS
+    const photoUrls = [
+        "/images/foto1.png",
+        "/images/foto2.jpg",
+        "/images/foto3.jpg",
+        "/images/foto4.jpg",
+        "/images/foto5.jpg",
+        "/images/foto6.jpg",
+        "/images/foto7.jpg",
+        "/images/foto8.jpg",
+        "/images/foto9.jpg",
+        "/images/foto10.jpg",
+        "/images/foto11.jpg",
+        "/images/foto12.jpg",
+        "/images/foto13.jpg",
+        "/images/foto14.jpg",
+        "/images/foto15.jpg",
+        "/images/foto16.jpg",
+        "/images/foto17.jpg",
+        "/images/foto18.jpg",
+        "/images/foto19.jpg",
+        "/images/foto20.jpg",
+        "/images/foto21.jpg",
+        "/images/foto22.jpg",
+        "/images/foto23.jpg",
+        "/images/foto24.jpg",
+        "/images/foto25.jpg",
+        "/images/foto26.jpg",
+        "/images/foto27.jpg",
+        "/images/foto28.jpg",
+        "/images/foto29.jpg"
+    ];
+
+    let photoCount = 0;
+
+    // Função melhorada para distribuição circular das fotos
+    function getCircularPosition(index, photoWidth, photoHeight) {
+        const centerX = window.innerWidth / 2;
+        const centerY = window.innerHeight / 2;
+        
+        // Múltiplos círculos com raios diferentes
+        const circleIndex = Math.floor(index / 8); // 8 fotos por círculo
+        const positionInCircle = index % 8;
+        
+        const baseRadius = 300;
+        const radius = baseRadius + (circleIndex * 150);
+        const angle = (positionInCircle * 45) * (Math.PI / 180); // 45 graus entre fotos
+        
+        const x = centerX + Math.cos(angle) * radius - photoWidth / 2;
+        const y = centerY + Math.sin(angle) * radius - photoHeight / 2;
+        
+        return {
+            x: Math.max(20, Math.min(x, window.innerWidth - photoWidth - 20)),
+            y: Math.max(100, Math.min(y, window.innerHeight - photoHeight - 20))
+        };
+    }
+
+    // Geração de partículas assim que a página carrega
+    function createParticles() {
+        const particlesContainer = document.getElementById("particles");
+        const particleTypes = ['dot', 'heart', 'star', 'circle'];
+        
+        for (let i = 0; i < 100; i++) {
+            const particle = document.createElement("div");
+            const randomType = particleTypes[Math.floor(Math.random() * particleTypes.length)];
+
+            // Adiciona o tipo de partícula (dot, heart, star, circle)
+            particle.classList.add("particle", randomType);
+
+            // Define posição aleatória
+            particle.style.left = `${Math.random() * 100}vw`;
+            particle.style.animationDuration = `${Math.random() * 8 + 6}s`;
+            particle.style.animationDelay = `${Math.random() * 8}s`;
+
+            // Lógica para variação de tamanhos e conteúdo
+            switch (randomType) {
+                case 'dot':
+                case 'circle':
+                    const size = Math.random() * 4 + 4; // Entre 4-8px
+                    particle.style.width = `${size}px`;
+                    particle.style.height = `${size}px`;
+                    break;
+                case 'heart':
+                    const scale = Math.random() * 0.5 + 0.7; // Entre 0.7-1.2
+                    particle.style.transform = `scale(${scale})`;
+                    particle.textContent = "❤️"; // Adiciona o emoji de coração
+                    break;
+                default:
+                    break;
+            }
+
+            // Adiciona a partícula ao container
+            particlesContainer.appendChild(particle);
+        }
+    }
+
+    // Cria as partículas ao carregar a página
+    createParticles();
+
+    camera.addEventListener("click", () => {
+        // Reproduzir o som do clique
+        const clickSound = new Audio('/assets/flash.mp3'); // Substitua pelo caminho do seu arquivo de áudio
+        clickSound.play();
+
+        // Flash effect
+        flashOverlay.classList.add("active");
+        setTimeout(() => {
+            flashOverlay.classList.remove("active");
+        }, 400);
+
+        // Adicionando o efeito de fade-out ao título e instrução
+        const title = document.querySelector(".title");
+        const clickInstruction = document.querySelector(".click-instruction");
+        const subtitle = document.querySelector(".subtitle");
+
+        title.classList.add("fade-out", "hidden"); // Fade out no título
+        subtitle.classList.add("fade-out", "hidden"); // Fade out na subtítulo
+        clickInstruction.classList.add("fade-out", "hidden"); // Fade out na instrução
+
+        // Create new polaroid photo
+        const newPhoto = document.createElement("div");
+        newPhoto.classList.add("polaroid-photo");
+
+        const photoImage = document.createElement("div");
+        photoImage.classList.add("photo-image");
+
+        if (photoUrls.length > 0) {
+            const photoIndex = photoCount % photoUrls.length;
+            photoImage.style.backgroundImage = `url('${photoUrls[photoIndex]}')`; 
+        } else {
+            const placeholder = document.createElement("div");
+            placeholder.classList.add("photo-placeholder");
+            placeholder.innerHTML = "📷";
+            photoImage.appendChild(placeholder);
+        }
+
+        newPhoto.appendChild(photoImage);
+        photosContainer.appendChild(newPhoto);
+
+        const cameraRect = camera.getBoundingClientRect();
+        const startX = cameraRect.left + cameraRect.width / 2 - 100;
+        const startY = cameraRect.top + cameraRect.height / 2 - 125;
+
+        newPhoto.style.left = `${startX}px`;
+        newPhoto.style.top = `${startY}px`;
+        newPhoto.style.transform = "scale(0.1) rotate(0deg)";
+        newPhoto.style.opacity = "0";
+
+        const finalPosition = getCircularPosition(photoCount, 200, 250);
+        const randomRotate = Math.random() * 20 - 10;
+
+        setTimeout(() => {
+            newPhoto.style.transition = "all 1.5s cubic-bezier(0.4, 0, 0.2, 1)";
+            newPhoto.style.left = `${finalPosition.x}px`;
+            newPhoto.style.top = `${finalPosition.y}px`;
+            newPhoto.style.transform = `scale(1) rotate(${randomRotate}deg)`;
+            newPhoto.style.opacity = "1";
+        }, 100);
+
+        photoCount++;
+    });
+</script>
+
+</body>
+</html>
